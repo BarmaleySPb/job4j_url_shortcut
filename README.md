@@ -1,8 +1,8 @@
-# job4j_chat
+# job4j_url_shortcut
 
 
 
-## Study project "job4j_chat".
+## Study project "job4j_url_shortcut".
 ### training course Job4j_MIDDLE
 
 Technologies used:
