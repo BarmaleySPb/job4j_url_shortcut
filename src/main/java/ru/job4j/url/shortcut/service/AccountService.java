@@ -1,9 +1,9 @@
-package ru.job4j.job4j_url_shortcut.service;
+package ru.job4j.url.shortcut.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.job4j.job4j_url_shortcut.model.Account;
-import ru.job4j.job4j_url_shortcut.repository.AccountRepository;
+import ru.job4j.url.shortcut.model.Account;
+import ru.job4j.url.shortcut.repository.AccountRepository;
 
 import java.util.Optional;
 

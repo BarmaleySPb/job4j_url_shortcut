@@ -1,4 +1,4 @@
-package ru.job4j.job4j_url_shortcut.model.dto;
+package ru.job4j.url.shortcut.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class AccountDTO {
     @NotBlank(message = "Site name must be not empty")
-    String site;
+    private String site;
 
     public AccountDTO() {
 

@@ -1,4 +1,4 @@
-package ru.job4j.job4j_url_shortcut.model;
+package ru.job4j.url.shortcut.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ public class Shortcut {
     private long id;
     private String url;
     private String code;
-    private long callCounter = 0;
+    private long callCounter;
     @ManyToOne()
     @JoinColumn(name = "account_id")
     private Account account;

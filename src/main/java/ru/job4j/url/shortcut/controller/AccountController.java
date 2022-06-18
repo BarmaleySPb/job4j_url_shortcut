@@ -1,4 +1,4 @@
-package ru.job4j.job4j_url_shortcut.controller;
+package ru.job4j.url.shortcut.controller;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpStatus;
@@ -8,14 +8,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.job4j.job4j_url_shortcut.model.Account;
-import ru.job4j.job4j_url_shortcut.model.Shortcut;
-import ru.job4j.job4j_url_shortcut.model.dto.AccountDTO;
-import ru.job4j.job4j_url_shortcut.model.dto.RegDTO;
-import ru.job4j.job4j_url_shortcut.model.dto.ShortcutDTO;
-import ru.job4j.job4j_url_shortcut.model.dto.StatisticsDTO;
-import ru.job4j.job4j_url_shortcut.service.AccountService;
-import ru.job4j.job4j_url_shortcut.service.ShortcutService;
+import ru.job4j.url.shortcut.model.Account;
+import ru.job4j.url.shortcut.model.Shortcut;
+import ru.job4j.url.shortcut.model.dto.AccountDTO;
+import ru.job4j.url.shortcut.model.dto.RegDTO;
+import ru.job4j.url.shortcut.model.dto.ShortcutDTO;
+import ru.job4j.url.shortcut.model.dto.StatisticsDTO;
+import ru.job4j.url.shortcut.service.AccountService;
+import ru.job4j.url.shortcut.service.ShortcutService;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -59,7 +59,7 @@ public class AccountController {
     public ResponseEntity<Map<String, String>> convert(@Valid @RequestBody ShortcutDTO shortcutDTO) {
         Shortcut shortcut = new Shortcut();
         String site = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(shortcutDTO.getUrl().contains(site)) {
+        if (shortcutDTO.getUrl().contains(site)) {
             shortcut.setUrl(shortcutDTO.getUrl());
             shortcut.setCode(RandomStringUtils.randomAlphanumeric(8));
             shortcut.setAccount(accountService.findBySite(site));

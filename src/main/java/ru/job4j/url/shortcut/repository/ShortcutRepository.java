@@ -1,10 +1,10 @@
-package ru.job4j.job4j_url_shortcut.repository;
+package ru.job4j.url.shortcut.repository;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import ru.job4j.job4j_url_shortcut.model.Shortcut;
+import ru.job4j.url.shortcut.model.Shortcut;
 
 import java.util.List;
 import java.util.Optional;

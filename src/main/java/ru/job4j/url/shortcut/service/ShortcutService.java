@@ -1,10 +1,10 @@
-package ru.job4j.job4j_url_shortcut.service;
+package ru.job4j.url.shortcut.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.job4j.job4j_url_shortcut.model.Shortcut;
-import ru.job4j.job4j_url_shortcut.model.dto.StatisticsDTO;
-import ru.job4j.job4j_url_shortcut.repository.ShortcutRepository;
+import ru.job4j.url.shortcut.model.Shortcut;
+import ru.job4j.url.shortcut.model.dto.StatisticsDTO;
+import ru.job4j.url.shortcut.repository.ShortcutRepository;
 
 import java.util.ArrayList;
 import java.util.List;
