@@ -10,7 +10,7 @@ to their site. When using a shortened link, the app will redirect to the
 original URL. Interaction occurs through simple http requests.
 
 ### Technologies used:
-- Java 17
+- Java 18
 - PostgreSQL
 - Hibernate
 - Spring Boot 2
