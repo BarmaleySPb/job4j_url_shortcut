@@ -1,31 +1,64 @@
 package ru.job4j.url.shortcut.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Account {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "UniqueSite", columnNames = {"site"})
+})
+public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String site;
     private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public Account() {
-
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public static Account of(String login, String password) {
-        Account account = new Account();
-        account.setSite(login);
-        account.setPassword(password);
-        return account;
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return site;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

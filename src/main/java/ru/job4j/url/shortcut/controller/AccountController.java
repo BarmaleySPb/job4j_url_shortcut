@@ -1,23 +1,21 @@
 package ru.job4j.url.shortcut.controller;
 
+import jakarta.validation.Valid;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.url.shortcut.model.Account;
 import ru.job4j.url.shortcut.model.Shortcut;
-import ru.job4j.url.shortcut.model.dto.AccountDTO;
-import ru.job4j.url.shortcut.model.dto.RegDTO;
 import ru.job4j.url.shortcut.model.dto.ShortcutDTO;
 import ru.job4j.url.shortcut.model.dto.StatisticsDTO;
 import ru.job4j.url.shortcut.service.AccountService;
 import ru.job4j.url.shortcut.service.ShortcutService;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -29,30 +27,12 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    private final BCryptPasswordEncoder encoder;
 
     private final ShortcutService shortcutService;
 
-    public AccountController(AccountService accountService, BCryptPasswordEncoder encoder,
-                             ShortcutService shortcutService) {
+    public AccountController(AccountService accountService, ShortcutService shortcutService) {
         this.accountService = accountService;
-        this.encoder = encoder;
         this.shortcutService = shortcutService;
-    }
-
-    @PostMapping("/registration")
-    public ResponseEntity<RegDTO> registration(@Valid @RequestBody AccountDTO accountDTO) {
-        String site = accountDTO.getSite();
-        boolean registration = checkExists(site);
-        String password = RandomStringUtils.randomAscii(8);
-        RegDTO regDTO = RegDTO.of(registration, site, password);
-        if (registration) {
-            Account newAccount = Account.of(site, encoder.encode(password));
-            accountService.save(newAccount);
-        } else {
-            throw new IllegalArgumentException("You are already registered");
-        }
-        return new ResponseEntity<>(regDTO, HttpStatus.CREATED);
     }
 
     @PostMapping("/convert")
@@ -62,7 +42,8 @@ public class AccountController {
         if (shortcutDTO.getUrl().contains(site)) {
             shortcut.setUrl(shortcutDTO.getUrl());
             shortcut.setCode(RandomStringUtils.randomAlphanumeric(8));
-            shortcut.setAccount(accountService.findBySite(site));
+            shortcut.setAccount(accountService.findBySite(site).orElseThrow(
+                    () -> new UsernameNotFoundException("Account not found")));
             shortcutService.save(shortcut);
         } else {
             throw new IllegalArgumentException("Please check domain name");
@@ -81,14 +62,13 @@ public class AccountController {
     @GetMapping("/statistics")
     public ResponseEntity<List<StatisticsDTO>> statistics() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Account site = accountService.findBySite(authentication.getName());
+        Account site = accountService.findBySite(authentication.getName()).orElseThrow(
+                () -> new UsernameNotFoundException("Account not found")
+        );
         return new ResponseEntity<>(
                 shortcutService.findAllByAccountId(site.getId()),
                 HttpStatus.OK
         );
     }
 
-    private boolean checkExists(String site) {
-        return this.accountService.findBySite(site) == null;
-    }
 }

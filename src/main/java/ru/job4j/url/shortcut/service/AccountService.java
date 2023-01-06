@@ -24,7 +24,7 @@ public class AccountService {
         return accountRepository.findById(id);
     }
 
-    public Account findBySite(String site) {
+    public Optional<Account> findBySite(String site) {
         return accountRepository.findBySite(site);
     }
 

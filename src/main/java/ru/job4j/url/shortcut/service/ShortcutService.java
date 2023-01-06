@@ -29,7 +29,10 @@ public class ShortcutService {
         List<StatisticsDTO> statisticList = new ArrayList<>();
         List<Shortcut> urls = shortCutRepository.findAllByAccountId(id);
         for (Shortcut url : urls) {
-            statisticList.add(StatisticsDTO.of(url.getUrl(), url.getCallCounter()));
+            statisticList.add(StatisticsDTO.builder()
+                    .url(url.getUrl())
+                    .callCounter(url.getCallCounter())
+                    .build());
         }
         return statisticList;
     }
